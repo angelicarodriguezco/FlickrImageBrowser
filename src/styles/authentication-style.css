@@ -31,13 +31,11 @@ form {
     gap: 15px;
 }
 
-
 label {
     text-align: left;
     font-weight: bold;
     color: #444;
 }
-
 
 input {
     width: 100%;
@@ -53,7 +51,6 @@ input:focus {
     outline: none;
 }
 
-
 button {
     background: #007bff;
     color: white;
@@ -68,7 +65,6 @@ button {
 button:hover {
     background: #0056b3;
 }
-
 
 p {
     margin-top: 15px;
@@ -87,7 +83,6 @@ body.login-page {
     background: #f8f9fa;
 }
 
-
 body.login-page button {
     background: #28a745;
 }
@@ -96,10 +91,10 @@ body.login-page button:hover {
     background: #218838;
 }
 
+
 body.change-password-page {
     background: #fdf2e9;
 }
-
 
 body.change-password-page button {
     background: #ff5733;
@@ -109,7 +104,61 @@ body.change-password-page button:hover {
     background: #c70039;
 }
 
-
 #change-password-form input {
     margin-bottom: 10px;
+}
+
+
+body.temporary-password-page {
+    background: #e9f7ef;
+}
+
+body.temporary-password-page button {
+    background: #ff9f00;
+}
+
+body.temporary-password-page button:hover {
+    background: #e07b00;
+}
+
+
+body.recover-password-page {
+    background: #f1f1f1;
+}
+
+body.recover-password-page button {
+    background: #6c757d;
+}
+
+body.recover-password-page button:hover {
+    background: #5a6268;
+}
+
+
+body.two-step-verification-page {
+    background: #f9f9f9;
+}
+
+body.two-step-verification-page button {
+    background: #17a2b8;
+}
+
+body.two-step-verification-page button:hover {
+    background: #138496;
+}
+
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+
+.success {
+    color: green;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
 }

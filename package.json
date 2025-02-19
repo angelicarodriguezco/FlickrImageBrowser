@@ -19,7 +19,11 @@
   "homepage": "https://github.com/angelicarodriguezco/FlickrImageBrowser#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "connect-mongodb-session": "^5.0.0",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "mailersend": "^2.3.0",
     "mongoose": "^8.10.1"
   }

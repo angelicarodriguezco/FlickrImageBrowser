@@ -108,6 +108,14 @@ const getProfilePhoto = async(username) => {
     }
 };
 
+const searchUser = async (email) => {
+    return await User.findOne({email});
+}
+
+const searchUserByUsername = async (username) => {
+    return await User.findOne({username});
+}
+
 module.exports = {
     register,
     validateUser,
@@ -115,5 +123,7 @@ module.exports = {
     generateTemporaryPassword,
     generateOTP,
     forgotPassword,
-    getProfilePhoto
+    getProfilePhoto,
+    searchUserByUsername,
+    searchUser
 }

@@ -1,18 +1,29 @@
-import { fetchImages} from "../services/flickrService";
+import {fetchImages} from "../services/flickrService";
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search");
     const imageList = document.getElementById("images");
-    const modal = document.getElementById("image-details");
-    const modalContainer = document.getElementById("image-details-container");
+    const modal = document.getElementById("image-modal");
+    const modalContainer = document.getElementById("modal-content");
     const backButton = document.getElementById("back-button");
 
+
+    const loadingMessage = document.createElement("div");
+    loadingMessage.innerHTML = "Loading images...";
+    imageList.appendChild(loadingMessage);
+
     function displayImages(query) {
+        loadingMessage.style.display = "block";
+
         fetchImages(query).then(images => {
+            console.log(images);
             imageList.innerHTML = "";
+            loadingMessage.style.display = "none";
+
+
             if (images.length > 0) {
                 images.forEach(photo => {
-                    const imgUrl = 'https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg';
+                    const imgUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg`;
                     const imgElement = document.createElement("img");
                     imgElement.src = imgUrl;
                     imgElement.alt = photo.title || "Flickr Image";
@@ -33,18 +44,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function showImageDetials(photo) {
-        const imgUrl = 'https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg'
-        modalContainer.innerHTML = '<h2>${photo.title}</h2>\n' +
-            '            <img src="${imgUrl}" alt="${photo.title}" />\n' +
-            '            <p><strong>Photo ID:</strong> ${photo.id}</p>';
+    function showImageDetails(photo) {
+        const imgUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+        const modalTitle = document.getElementById("modal-title");
+        const modalImage = document.getElementById("modal-image");
+        const modalDescription = document.getElementById("modal-description");
 
-        modal.classList.add("active");
+        modalTitle.textContent = photo.title;
+        modalImage.src = imgUrl;
+        modalDescription.innerHTML = `<strong>Photo ID:</strong> ${photo.id}`;
+
+        modal.style.display = "block";
         document.body.style.overflow = "hidden";
 
         backButton.addEventListener("click", function () {
-            modal.classList.remove("active");
-            document.body.style.overflow;
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
         });
     }
 

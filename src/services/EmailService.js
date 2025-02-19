@@ -13,7 +13,7 @@ const mailerSend = new MailerSend({
 
 const sendEmail = async (email, name, title, message) => {
     try {
-        const sentFrom = new Sender('MS_5gPdgL@trial-yzkq3406n004d796.mlsender.net', 'Administrador');
+        const sentFrom = new Sender('MS_5gPdgL@trial-yzkq3406n004d796.mlsender.net', 'Admin');
         const recipients = [
             new Recipient('maria@rodriguezcoto.com')
         ];
@@ -22,6 +22,7 @@ const sendEmail = async (email, name, title, message) => {
             .setFrom(sentFrom)
             .setTo(recipients)
             .setSubject(title)
+            .setText(message)
         await mailerSend.email.send(emailParams);
         return true;
     } catch (error) {

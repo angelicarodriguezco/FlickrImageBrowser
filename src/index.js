@@ -132,7 +132,7 @@ app.post('/SignUp', async function (request, response) {
     console.log(result);
     if (result) {
         sendTemporaryPassword(email, name, temporaryPassword);
-        response.redirect('/TemporaryPassword');
+        response.redirect('/');
     } else {
         const errorMessage = 'There was an issue with registration. Please try again later.';
         response.redirect('/SignUp?error=' + encodeURIComponent(errorMessage));

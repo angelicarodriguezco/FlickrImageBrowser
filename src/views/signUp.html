@@ -8,18 +8,37 @@
 <body>
 <div class="parent-container">
     <h1>Sign Up</h1>
-    <form id="signup-form">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+    <form id="signup-form" action="/SignUp" method="post">
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <div id="group__name">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <div id="group__lastName">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
 
-        <label for="confirm-password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm-password" required>
+        <div id="group__username">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <div id="group__email">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div id="group__password">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div id="group__confirm-password">
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
 
         <button type="submit">Sign Up</button>
     </form>
@@ -27,6 +46,6 @@
     <p>Already have an account? <a href="login.ejs">Log in</a></p>
 </div>
 
-<script src=""></script>
+<script src="../scripts/signUp.js"></script>
 </body>
 </html>

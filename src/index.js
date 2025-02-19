@@ -7,14 +7,24 @@ const { authMiddleWare } = require('./authMiddleWare')
 const app = express();
 connectDataBase();
 
-app.set('pages', path.join(__dirname, 'pages'));
+app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(express.static(path.join(__dirname, 'src')));
 
+
 const session = require('express-session');
+const {
+    generateTemporaryPassword,
+    register,
+    validateUser,
+    generateOTP,
+    changePassword, searchUserByUsername
+} = require("./services/UserService");
+const {sendTemporaryPassword, sendOTP} = require("./services/EmailService");
 const MongoDBStore = require('connect-mongodb-session')(session);
 app.use(session({
     secret: 'foo',
@@ -43,7 +53,7 @@ app.get('/Login', (request, response) => {
         response.redirect('/');
     } else {
         const { error } = request.query;
-        response.render("login", { error });
+        response.render("login.ejs", { error });
     }
 });
 
@@ -77,6 +87,41 @@ app.get('/ResendCode', async (request,response) => {
     }
 })
 
+app.get('/EditProfile', authMiddleWare, async (request, response) => {
+    const { searchUserByUsername } = require('./services/UserService');
+    const user = await searchUserByUsername(request.session.username);
+    const { error } = request.query;
+    response.render("EditProfile", { user, error });
+});
+
+app.get('/ChangePassword', authMiddleWare, (request, response) => {
+    const { error } = request.query;
+    response.render("changePassword", { error });
+});
+
+app.get('/ProfilePhoto', authMiddleWare, async (request, response) => {
+    try {
+        const { searchUserByUsername } = require('./services/UserService');
+        const user = await searchUserByUsername(request.session.username);
+        const image = path.join(__dirname, 'pages', user.profilePhoto);
+        response.sendFile(image);
+    } catch (error) {
+        console.log(error);
+        const image = path.join(__dirname, 'assets/default-profile-photo.png');
+        response.sendFile(image);
+    }
+});
+
+app.get('/LogOut', (request, response) => {
+    request.session.destroy((error) => {
+        if (error) {
+            return response.status(500).send('There was an issue logging out')
+        }
+        response.clearCookie('connect.sid');
+        response.redirect('/');
+    });
+});
+
 app.post('/SignUp', async function (request, response) {
     const { register } = require('./services/UserService');
     const { sendTemporaryPassword } = require('./services/EmailService');
@@ -107,7 +152,9 @@ app.post('/Login', async function (request, response) {
         await sendOTP(user.email,user.name, otp);
         response.redirect('/TwoStepVerification');
     } catch (error) {
-        response.redirect('/Login?error=' + encodeURIComponent(error));
+        console.error("Login Error:", error);
+        const errorMessage = typeof error === 'string' ? error : "Invalid email or password.";
+        response.redirect('/Login?error=' + encodeURIComponent(errorMessage));
     }
 });
 
@@ -117,18 +164,6 @@ app.post('/ChangePassword', authMiddleWare, async function (request, response) {
     const { newPassword, confirmPassword } = request.body;
     const redirection = await changePassword(username, newPassword, confirmPassword);
     response.redirect(redirection);
-});
-
-app.get('/EditProfile', authMiddleWare, async (request, response) => {
-    const { searchUserByUsername } = require('./services/UserService');
-    const user = await searchUserByUsername(request.session.username);
-    const { error } = request.query;
-    response.render("EditProfile", { user, error });
-});
-
-app.get('/ChangePassword', authMiddleWare, (request, response) => {
-    const { error } = request.query;
-    response.render("changePassword", { error });
 });
 
 app.post('/ForgotPassword', async function (request, response) {
@@ -168,27 +203,4 @@ app.post('/TwoStepVerification', async function (request, response) {
     } else {
         response.redirect('/TwoStepVerification?error=Code%20incorrect');
     }
-});
-
-app.get('/ProfilePhoto', authMiddleWare, async (request, response) => {
-    try {
-        const { searchUserByUsername } = require('./services/UserService');
-        const user = await searchUserByUsername(request.session.username);
-        const image = path.join(__dirname, 'pages', user.profilePhoto);
-        response.sendFile(image);
-    } catch (error) {
-        console.log(error);
-        const image = path.join(__dirname, 'assets/default-profile-photo.png');
-        response.sendFile(image);
-    }
-});
-
-app.get('/LogOut', (request, response) => {
-    request.session.destroy((error) => {
-        if (error) {
-            return response.status(500).send('There was an issue logging out')
-        }
-        response.clearCookie('connect.sid');
-        response.redirect('/');
-    });
 });

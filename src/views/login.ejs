@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="../styles/authentication-style.css">
+    <link rel="stylesheet" type="text/css" href="/styles/authentication-style.css">
 </head>
 <body class="login-page">
 <div class="parent-container">
     <h1>Login</h1>
-    <form id="login-form">
+
+    <% if (error) { %>
+        <div class="alert"><%= error %></div>
+    <% } %>
+
+    <form id="login-form" action="/Login" method="post">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
 
@@ -22,6 +27,6 @@
     <p><a href="changePassword.html">Forgot password?</a></p>
 </div>
 
-<script src=""></script>
+<script src="/scripts/login.js"></script>
 </body>
 </html>

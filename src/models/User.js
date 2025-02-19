@@ -11,8 +11,6 @@ const UserSchema = new mongoose.Schema({
     loginAttempts: { type: Number, default: 0 },
 }, { versionKey: false });
 
-UserSchema.index({username: 1}, {unique: true});
-
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

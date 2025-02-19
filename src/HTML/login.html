@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="../styles/authentication-style.css">
 </head>
-<body>
+<body class="login-page">
+<div class="parent-container">
+    <h1>Login</h1>
+    <form id="login-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
 
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Don't have an account? <a href="signUp.html">Sign up</a></p>
+    <p><a href="changePassword.html">Forgot password?</a></p>
+</div>
+
+<script src=""></script>
 </body>
 </html>

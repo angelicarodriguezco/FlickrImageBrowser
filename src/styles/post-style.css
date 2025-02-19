@@ -76,17 +76,15 @@ input[type="file"] {
     margin-bottom: 20px;
 }
 
+body.edit-post-page {
+    background: #eef2f3;
+}
 
-@media (max-width: 768px) {
-    .post-container {
-        padding: 20px;
-    }
 
-    h1 {
-        font-size: x-large;
-    }
+body.edit-post-page button {
+    background: #007bff;
+}
 
-    input[type="text"], textarea, input[type="file"] {
-        font-size: x-large;
-    }
+body.edit-post-page button:hover {
+    background: #0056b3;
 }

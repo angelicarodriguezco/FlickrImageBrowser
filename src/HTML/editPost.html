@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="../styles/post-style.css">
+</head>
+<body class="edit-post-page">
+<div class="post-container">
+    <h1>Edit Post</h1>
+    <form id="edit-post-form">
+        <label for="post-title">Title:</label>
+        <input type="text" id="post-title" name="title" required>
+
+        <label for="post-description">Description:</label>
+        <textarea id="post-description" name="description" required></textarea>
+
+        <label for="post-image">Change Image (Optional):</label>
+        <input type="file" id="post-image" name="image">
+
+        <button type="submit">Update Post</button>
+    </form>
+
+    <p><a href="list.html">Back to List</a></p>
+</div>
+
+<script src=""></script>
+</body>
+</html>

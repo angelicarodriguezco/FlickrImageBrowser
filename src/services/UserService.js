@@ -53,13 +53,67 @@ const changePassword = async (username, newPassword, confirmPassword) => {
             return '/changePassword?error=Password%20does%20not%20coincide';
         }
         const newEncryptedPassword = await bcrypt.hash(newPassword, 10);
-        const result = await user.findOne(
+        const result = await User.findOne(
             {username: username},
             {$set: {password: newEncryptedPassword}}
         );
 
         if (result) {
-            return
+            return '/author?msg=Password%20updated';
+        } else {
+            return '/author?error=Error%20changing%20password';
         }
+    } catch (error) {
+        return '/author?error=' + error.message;
     }
+};
+
+const generateTemporaryPassword = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let temporaryPassword = '';
+    for (let i = 0; i < 8; i++) {
+        temporaryPassword += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return temporaryPassword;
+};
+
+const generateOTP = () => {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    return otp.toString();
+}
+
+const forgotPassword = async (email) => {
+    const temporaryPassword = generateTemporaryPassword();
+    const newEncryptedPassword = await bcrypt.hash(temporaryPassword, 10);
+    const user = await User.findOneAndUpdate(
+        {email: email},
+        {password: newEncryptedPassword, loginAttempts : 0},
+        {new: true}
+    );
+    if (user) {
+        sendTemporaryPassword(user.email, user.name, temporaryPassword);
+        return true;
+    } else {
+        return false;
+    }};
+
+const getProfilePhoto = async(username) => {
+    const user = await User.findOne({
+        username: username
+    });
+    if (user) {
+        return user.profilePhoto;
+    } else {
+        return '';
+    }
+};
+
+module.exports = {
+    register,
+    validateUser,
+    changePassword,
+    generateTemporaryPassword,
+    generateOTP,
+    forgotPassword,
+    getProfilePhoto
 }

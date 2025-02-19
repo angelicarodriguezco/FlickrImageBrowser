@@ -30,7 +30,7 @@ const sendEmail = async (email, name, title, message) => {
     }
 };
 
-const sendTemporaryPassword = async(email, name, temporaryPassword) => {
+const sendTemporaryPassword = async (email, name, temporaryPassword) => {
     sendEmail(
         email,
         name,

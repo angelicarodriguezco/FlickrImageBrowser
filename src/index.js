@@ -25,6 +25,7 @@ const {
     changePassword, searchUserByUsername
 } = require("./services/UserService");
 const {sendTemporaryPassword, sendOTP} = require("./services/EmailService");
+const {response} = require("express");
 const MongoDBStore = require('connect-mongodb-session')(session);
 app.use(session({
     secret: 'foo',
@@ -58,21 +59,17 @@ app.get('/Login', (request, response) => {
 });
 
 app.get('/SignUp', (req, res) => {
-    res.render("signUp.html");
+    response.render("signUp.html");
 });
 
-app.get('/TemporaryPassword', (request, response) => {
-    response.render("temporaryPassword.html");
-});
-
-app.get('/RecoverPassword', (request, response) => {
+app.get('/ForgotPassword', (request, response) => {
     const { error, email } = request.query;
-    response.render("recoverPassword", { error, email });
+    response.render("forgotPassword.ejs", { query: request.query });
 });
 
 app.get('/TwoStepVerification', (request, response) => {
     const { error, msg } = request.query;
-    response.render("twoStepVerification", { error, msg });
+    response.render("twoStepVerification.ejs", { error, msg });
 });
 
 app.get('/ResendCode', async (request,response) => {
@@ -125,14 +122,12 @@ app.get('/LogOut', (request, response) => {
 app.post('/SignUp', async function (request, response) {
     const { register } = require('./services/UserService');
     const { sendTemporaryPassword } = require('./services/EmailService');
-    const { name, username, lastName, email } = request.body;
-    const { generateTemporaryPassword } = require('./services/UserService');
-    const temporaryPassword = generateTemporaryPassword();
-    const result = await register(name, username, lastName, email, temporaryPassword);
+    const { name, username, lastName, email, password } = request.body;
+    const result = await register(name, username, lastName, email, password);
     console.log(result);
+
     if (result) {
-        sendTemporaryPassword(email, name, temporaryPassword);
-        response.redirect('/');
+        response.redirect('/Login');
     } else {
         const errorMessage = 'There was an issue with registration. Please try again later.';
         response.redirect('/SignUp?error=' + encodeURIComponent(errorMessage));
@@ -171,9 +166,9 @@ app.post('/ForgotPassword', async function (request, response) {
     const email = request.body.email;
     const recoveredPassword = await forgotPassword(email);
     if (recoveredPassword) {
-        response.redirect('/TemporaryPassword')
+        response.redirect('/forgotPassword?msg=' + encodeURIComponent("An email with a temporary password has been sent."));
     } else {
-        response.redirect('/ForgotPassword?error=%20unable%20to%20recover%20password');
+        response.redirect('/forgotPassword?error=' + encodeURIComponent("This email is not registered."));
     }
 });
 

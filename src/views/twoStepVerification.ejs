@@ -11,8 +11,8 @@
     <h1>Two-Step Verification</h1>
     <p>A one-time password (OTP) has been sent to your email. Please enter it below to verify your identity.</p>
     <form action="/TwoStepVerification" method="POST">
-      <label for="codigo">Enter OTP:</label>
-      <input type="text" id="codigo" name="codigo" required>
+      <label for="code">Enter OTP:</label>
+      <input type="text" id="code" name="code" required>
       <% if (error) { %>
       <div class="error"><%= error %></div>
       <% } %>

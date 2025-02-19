@@ -1,4 +1,4 @@
-import {fetchImages} from "../services/flickrService";
+import {fetchImages} from "../services/FlickrService";
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search");

@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/angelicarodriguezco/FlickrImageBrowser#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.2",
+    "mailersend": "^2.3.0",
+    "mongoose": "^8.10.1"
   }
 }
